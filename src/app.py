@@ -17,9 +17,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{Config.DB_USER}:{Conf
 db = SQLAlchemy(app)
 
 
-@app.route('/')
-def root():
-    return "Hello world!"
+@app.route("/home")
+def home():
+    return {"text": "Hello world!"}
 
 
 if __name__ == '__main__':
