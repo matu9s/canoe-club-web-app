@@ -1,0 +1,21 @@
+# Report z 1. týždňa
+- **Meno:** Matúš Hluch
+- **Názov projektu:** Webová aplikácia pre kanoistický klub
+- **Týždeň:** 12.03.2023 až 19.03.2023
+- **Plán na tento týždeň:** 
+  - Stiahnutie MySQL databázy a jej spustenie a naštudovanie. 
+  - Nainštalovanie Flasku, Reactu, Bootstrapu ich prepojenie aj s DB.
+- **Spravené za tento týždeň:**
+  - Dokončenie špecifikácie. 4d3dac2dd49a972444c35163e4d1b744493c07f7
+  - Docker compose súbor s MySQL databázou. bdb318157638ce6fd3159b7ceeb11f3ef07c5ec2
+  - Pridanie Flask aplikácie a jej prepojenie s databázou a SQLAlechemy. 6f6177f275296ee49e68dec1ed5bc2aa8e95e1ae
+  - Inicializácia React frontendu s requestom na Flask backend. 49c70468f81c632192871f4202e6949677c46baa
+  - Pridanie bootstrapu do React frontendu. 844c6768ed8263ad3cbb683b40a0e27567ef464a
+  - **Všetko dokopy:** fd6e43b07488416f0d7406916eec5cc8770e0157
+- **Rozdiely medzi plánom a skutočnosťou:** N/A
+- **Plány na ďalší týždeň:**
+  - Preštudovať základy Flasku, prvé REST API.
+  - Test deploymentu na pythonanywhere.
+  - Inicializovať modely pre SQLAlchemy.
+- **Problémy a zmeny:**
+  - Do plánu na budúci týždeň pridaná inicializácia SQLAlchemy modelov, ktoré je nutné pre prácu so SQLAlchemy vytvoriť.
