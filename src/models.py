@@ -1,6 +1,6 @@
 from enum import Enum
 
-from src.extensions import db
+from extensions import db
 
 account_role = db.Table("account_role",
                         db.Column("account_id", db.Integer, db.ForeignKey("account.id"), primary_key=True),
