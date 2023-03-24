@@ -1,0 +1,49 @@
+import os
+from socket import gethostname
+
+from dotenv import load_dotenv
+from flask import Flask
+
+from routes import api
+from extensions import db
+
+db = db
+
+load_dotenv()
+
+
+class Config:
+    DB_USER = os.getenv("DB_USER")
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    DB_HOST_ADDRESS = os.getenv("DB_HOST_ADDRESS")
+    DB_DATABASE = os.getenv("DB_DATABASE")
+
+
+def create_app(config_object=Config):
+    created_app = Flask(__name__.split(".")[0], static_folder="../build", static_url_path="/")
+    created_app.config[
+        "SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{config_object.DB_USER}:{config_object.DB_PASSWORD}@{config_object.DB_HOST_ADDRESS}/{config_object.DB_DATABASE}"
+    created_app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 280}
+    register_extensions(created_app)
+    return created_app
+
+
+def register_extensions(created_app):
+    db.init_app(created_app)
+
+
+app = create_app(Config)
+app.register_blueprint(api)
+
+if __name__ == "__main__":
+    with app.app_context():
+        from models import *
+
+        db.create_all()
+    if 'liveconsole' not in gethostname():
+        app.run()
+
+
+@app.route("/")
+def index():
+    return app.send_static_file("index.html")
