@@ -1,0 +1,19 @@
+# Report z 2. týždňa
+- **Meno:** Matúš Hluch
+- **Názov projektu:** Webová aplikácia pre kanoistický klub
+- **Týždeň:** 20.03.2023 až 27.03.2023
+- **Plán na tento týždeň:** 
+  - Preštudovať základy Flasku, prvé REST API.
+  - Test deploymentu na pythonanywhere.
+  - Inicializovať modely pre SQLAlchemy.
+- **Spravené za tento týždeň:**
+  - Inicializovať modely pre SQLAlchemy. e28e7a29185fa3cf95ef1ea8ebd5200760445863
+  - Preštudovať základy Flasku, prvé REST API. 935881ee01332e841a7eb3f64070b954f1ac5b7c
+  - Test deploymentu na pythonanywhere. https://matu9s.pythonanywhere.com/ d79b6c07adfc5bf0c7d213de1fd94e38caf9c194
+  - **Všetko dokopy:** 3f0767cabed7c5445f55749db473e7b69d6bca0c
+- **Rozdiely medzi plánom a skutočnosťou:** N/A
+- **Plány na ďalší týždeň:**
+  - Naštudovanie Flask login a spravenie základného loginu + inicializovať tabuľku účtov.
+  - Základ UI s bootstrapom a spolupráca s Reactom.
+  - Naštudovanie Reactu + prvé React UI pre login.
+- **Problémy a zmeny:** N/A
