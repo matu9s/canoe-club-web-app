@@ -1,5 +1,7 @@
 from enum import Enum
 
+from flask_login import UserMixin
+
 from extensions import db
 
 account_role = db.Table("account_role",
@@ -11,7 +13,7 @@ training_member = db.Table("training_member",
                            db.Column("member_id", db.Integer, db.ForeignKey('member.id'), primary_key=True))
 
 
-class Account(db.Model):
+class Account(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(30))

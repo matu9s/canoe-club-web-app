@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask
 
 from routes import api
-from extensions import db
+from extensions import db, login_manager, bcrypt, migrate
 
 db = db
 
@@ -17,10 +17,12 @@ class Config:
     DB_PASSWORD = os.getenv("DB_PASSWORD")
     DB_HOST_ADDRESS = os.getenv("DB_HOST_ADDRESS")
     DB_DATABASE = os.getenv("DB_DATABASE")
+    SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 def create_app(config_object=Config):
     created_app = Flask(__name__.split(".")[0], static_folder="../build", static_url_path="/")
+    created_app.secret_key = config_object.SECRET_KEY
     created_app.config[
         "SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{config_object.DB_USER}:{config_object.DB_PASSWORD}@{config_object.DB_HOST_ADDRESS}/{config_object.DB_DATABASE}"
     created_app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 280}
@@ -30,6 +32,9 @@ def create_app(config_object=Config):
 
 def register_extensions(created_app):
     db.init_app(created_app)
+    login_manager.init_app(created_app)
+    bcrypt.init_app(created_app)
+    migrate.init_app(created_app, db)
 
 
 app = create_app(Config)
