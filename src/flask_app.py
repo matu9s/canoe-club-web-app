@@ -2,10 +2,10 @@ import os
 from socket import gethostname
 
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, abort
 
-from routes import api
 from extensions import db, login_manager, bcrypt, migrate
+from routes import api
 
 db = db
 
@@ -27,6 +27,15 @@ def create_app(config_object=Config):
         "SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{config_object.DB_USER}:{config_object.DB_PASSWORD}@{config_object.DB_HOST_ADDRESS}/{config_object.DB_DATABASE}"
     created_app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 280}
     register_extensions(created_app)
+
+    @login_manager.unauthorized_handler
+    def unauthorized():
+        abort(401)
+
+    @login_manager.user_loader
+    def load_account(account_id):
+        return db.session.get(Account, int(account_id))
+
     return created_app
 
 
