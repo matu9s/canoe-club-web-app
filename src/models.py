@@ -16,8 +16,7 @@ training_member = db.Table("training_member",
 class Account(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
-    password = db.Column(db.String(30))
-    salt = db.Column(db.String(30))
+    password = db.Column(db.String(200))
     name = db.Column(db.String(30))
     surname = db.Column(db.String(30))
     roles = db.relationship("Role", secondary=account_role, lazy='subquery',
