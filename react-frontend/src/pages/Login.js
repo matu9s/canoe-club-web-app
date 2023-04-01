@@ -37,15 +37,15 @@ const Login = () => {
       class="row justify-content-center col-md-6"
       onSubmit={handleSubmit}
     >
-      <Form.Group className="mb-3" controlId="formUsername">
+      <Form.Group className="ms-2 me-2 mb-3" controlId="formUsername">
         <Form.Label>Username:</Form.Label>
         <Form.Control
-          type="username"
+          type="text"
           placeholder="Your username"
           name="username"
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formPassword">
+      <Form.Group className="ms-2 me-2 mb-3" controlId="formPassword">
         <Form.Label>Password:</Form.Label>
         <Form.Control
           type="password"
