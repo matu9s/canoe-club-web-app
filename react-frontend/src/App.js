@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./pages/Layout";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 function App() {
-  const [data, setData] = useState([{}]);
-  useEffect(() => {
-    fetch("/api/home")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-
   return (
-    <>
-      {typeof data.text === "undefined" ? <p>waiting</p> : <p>{data.text}</p>}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
