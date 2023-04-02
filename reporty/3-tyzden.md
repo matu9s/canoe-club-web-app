@@ -1,0 +1,28 @@
+# Report z 3. týždňa
+- **Meno:** Matúš Hluch
+- **Názov projektu:** Webová aplikácia pre kanoistický klub
+- **Týždeň:** 27.03.2023 až 02.04.2023
+- **Plán na tento týždeň:** 
+  - Naštudovanie Flask login a spravenie základného loginu + inicializovať tabuľku účtov.
+  - Základ UI s bootstrapom a spolupráca s Reactom.
+  - Naštudovanie Reactu + prvé React UI pre login.
+- **Spravené za tento týždeň:**
+  - Naštudovanie Flask login a spravenie základného loginu + inicializovať tabuľku účtov. 
+    - 72a9947afd6453feaeda8e4d7c29a2e77f673e0a
+    - 39571f07b2405ffc5b57a3d96f48cf33972ff06e
+    - Tabuľka účtov inicializovaná zopár účtami a lokálne exportovaná (nezverejnené na githube)
+  - Pridanie migrácií a úprava tabuliek pre bcrypt.
+    -  9617a877ec680815fb09b4066d8dd626a30282f2
+    -  6adb21d761f502f20b76a02d64964e8925fe148e
+  - Základ UI s bootstrapom a spolupráca s Reactom.
+    - 323ab176999d3beed093eae8c2c718df2d94cf07
+  - Naštudovanie Reactu + prvé React UI pre login.
+    - 323ab176999d3beed093eae8c2c718df2d94cf07
+    - c6a0bbafb6141b528fcbfcd2733aba71bab572cf
+  - **Všetko dokopy:** c39b52d6bbfca991ea14249003af7b39e65a8537
+- **Rozdiely medzi plánom a skutočnosťou:**
+  - Pridanie migrácií, ktoré boli potrebné na upravenie databázy kvôli dĺžke bcrypt a soli uloženej v jednom reťazci s hashom v bcrypt.
+- **Plány na ďalší týždeň:**
+    - REST API a frontend pre lode.
+    - Inicializovať ďalšie tabuľky.
+- **Problémy a zmeny:** N/A
