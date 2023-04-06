@@ -1,10 +1,15 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { userContext } from "../UserContext";
 
 const Login = () => {
+  let { currentUser, setCurrentUser } = useContext(userContext);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (currentUser.username !== undefined) navigate("/");
+  }, [currentUser]);
   const [wrongPassword, setWrongPassword] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,8 +28,11 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.success) navigate("/");
-        else setWrongPassword(true);
+        if (data.success) {
+          localStorage.setItem("current_user", JSON.stringify(data.data));
+          setCurrentUser(data.data);
+          navigate("/");
+        } else setWrongPassword(true);
       })
       .catch((error) => {
         console.log(error);
@@ -39,11 +47,7 @@ const Login = () => {
     >
       <Form.Group className="ms-2 me-2 mb-3" controlId="formUsername">
         <Form.Label>Username:</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Your username"
-          name="username"
-        />
+        <Form.Control type="text" placeholder="Your username" name="username" />
       </Form.Group>
       <Form.Group className="ms-2 me-2 mb-3" controlId="formPassword">
         <Form.Label>Password:</Form.Label>

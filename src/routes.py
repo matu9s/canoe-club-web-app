@@ -12,7 +12,7 @@ def hello():
     return {"text": "Hello world!"}
 
 
-@api.route("/roles")
+@api.route("/roles/")
 def list_roles():
     roles = db.session.execute(db.select(Role)).scalars()
     return jsonify({"roles": [role.type.name for role in roles]})
@@ -41,8 +41,10 @@ def login():
     if account is not None:
         if bcrypt.check_password_hash(account.password, data["password"]):
             login_user(account)
-            return jsonify(success=True)
-    return jsonify({"error": "Wrong username or password."}), 400
+            return jsonify({"success": True,
+                            "data": {"username": account.username, "name": account.name, "surname": account.surname,
+                                     "roles": [role.type.name for role in account.roles]}})
+        return jsonify({"error": "Wrong username or password."}), 400
 
 
 @api.route("/logout/", methods=["POST"])
