@@ -4,6 +4,7 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AddBoat from "./pages/AddBoat";
 import { userContext } from "./UserContext";
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -22,6 +23,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="add-boat" element={<AddBoat />} />
           </Route>
         </Routes>
       </BrowserRouter>

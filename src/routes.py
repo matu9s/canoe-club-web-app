@@ -62,8 +62,9 @@ def add_boat():
         return jsonify({"error": "Wrong role.", "success": False}), 403
     data = request.get_json()
     boat = Boat(year_of_production=data["year_of_production"], size=BoatSize[data["size"]],
-                mini=data["mini"].lower() == "true",
-                defect=data["defect"], kayak_canoe=KayakCanoe[data["kayak_canoe"]], account_id=data["account_id"])
+                mini=data["mini"],
+                defect=data["defect"], kayak_canoe=KayakCanoe[data["kayak_canoe"]], account_id=data["account_id"],
+                model=data["model"])
     db.session.add(boat)
     db.session.commit()
     return jsonify(success=True)

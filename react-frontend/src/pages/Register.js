@@ -16,7 +16,6 @@ const Register = () => {
     event.preventDefault();
     const data = new FormData(event.target);
     const object = { roles: [] };
-    console.log(data);
     data.forEach((value, key) => {
       if (key === "role") {
         object["roles"].push(value);
