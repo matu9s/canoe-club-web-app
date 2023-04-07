@@ -66,9 +66,8 @@ class Boat(db.Model):
     size = db.Column(db.Enum(BoatSize))
     mini = db.Column(db.Boolean, default=False)
     defect = db.Column(db.String(280))
-    gender = db.Column(db.Enum(Gender))
-    category = db.Column(db.Enum(AgeCategory))
     kayak_canoe = db.Column(db.Enum(KayakCanoe))
+    model = db.Column(db.String(30))
     account_id = db.Column(db.ForeignKey("account.id"))
 
 
