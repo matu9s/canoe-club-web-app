@@ -2,15 +2,20 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { userContext } from "../UserContext";
+import { useContext, useEffect } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { currentUser, setCurrentUser } = useContext(userContext);
+  useEffect(() => {
+    if (currentUser.username !== undefined) navigate("/");
+  }, [currentUser]);
   const [noRoleSelected, setNoRoleSelected] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     const object = { roles: [] };
-    console.log(data);
     data.forEach((value, key) => {
       if (key === "role") {
         object["roles"].push(value);
@@ -32,7 +37,6 @@ const Register = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.success) navigate("/login");
       })
       .catch((error) => {
@@ -40,7 +44,7 @@ const Register = () => {
       });
   };
   return (
-    <Form class="mb-3" onSubmit={handleSubmit}>
+    <Form className="mb-3" onSubmit={handleSubmit}>
       <Form.Group className="ms-2 me-2 mb-3" controlId="formUsername">
         <Form.Label>Username:</Form.Label>
         <Form.Control
