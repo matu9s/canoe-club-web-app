@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AddBoat from "./pages/AddBoat";
+import BoatsList from "./pages/BoatsList";
 import { userContext } from "./UserContext";
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -24,6 +25,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="add-boat" element={<AddBoat />} />
+            <Route path="boat-list" element={<BoatsList />} />
           </Route>
         </Routes>
       </BrowserRouter>
