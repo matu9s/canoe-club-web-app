@@ -1,0 +1,26 @@
+# Report zo 4. týždňa
+- **Meno:** Matúš Hluch
+- **Názov projektu:** Webová aplikácia pre kanoistický klub
+- **Týždeň:** 2.04.2023 až 09.04.2023
+- **Plán na tento týždeň:** 
+    - REST API a frontend pre lode.
+    - Inicializovať ďalšie tabuľky.
+- **Spravené za tento týždeň:**
+  - Dokončenie loginu (perzistencia, logout). 
+    - 501977c8288c1b98d2a7dd15a95a6af83a51dc6a
+    - f64fde552ebae9f7c131f2f930dfd3c8ba22ef25
+  - Backend pre lode.
+    - 3dbbb99c3c11b23c5a78518e7c55911db6ed8342
+    - 00485b99d38108a30add0ee76b1691f134f11551
+  - Frontend pre lode.
+    - f04d2bdd0c74c55cc1f73a7237d1a4318cb3fd78
+    - cc0ec29109ae4bf0e20735c5f6f1aa33cc165180
+  - **Všetko dokopy:**
+    - 8faf5d20404fec00cb56fc1a8991dc5aae87a63d
+- **Rozdiely medzi plánom a skutočnosťou:**
+  - Dokončenie niektorých častí loginu.
+- **Plány na ďalší týždeň:**
+    - Deployment na pythonanywhere a beta report.
+    - Finalizácia beta verzie.
+    - Backend pre správu členov.
+- **Problémy a zmeny:** N/A
