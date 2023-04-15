@@ -68,6 +68,16 @@ const BoatsList = () => {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+    setBoats(
+      boats.map((mapBoat) =>
+        mapBoat.id === boat.id
+          ? {
+              ...mapBoat,
+              owner: { ...mapBoat.owner, username: currentUser.username },
+            }
+          : mapBoat
+      )
+    );
   };
 
   const handleUnborrow = (event, boat) => {
@@ -83,6 +93,16 @@ const BoatsList = () => {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+    setBoats(
+      boats.map((mapBoat) =>
+        mapBoat.id === boat.id
+          ? {
+              ...mapBoat,
+              owner: null,
+            }
+          : mapBoat
+      )
+    );
   };
 
   let boatsValues = Object.keys(boats).map(function (key) {
