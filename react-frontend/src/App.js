@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import AddBoat from "./pages/AddBoat";
 import BoatsList from "./pages/BoatsList";
 import { userContext } from "./UserContext";
+import background from "./background.jpg";
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const value = { currentUser, setCurrentUser };
@@ -16,20 +17,28 @@ function App() {
       setCurrentUser(JSON.parse(user));
     }
   }, []);
+  const appStyle = {
+    backgroundImage: `url(${background})`,
+    height: "100vh",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  };
   return (
-    <userContext.Provider value={value}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="add-boat" element={<AddBoat />} />
-            <Route path="boat-list" element={<BoatsList />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </userContext.Provider>
+    <div style={appStyle}>
+      <userContext.Provider value={value}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="add-boat" element={<AddBoat />} />
+              <Route path="boat-list" element={<BoatsList />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </userContext.Provider>
+    </div>
   );
 }
 
