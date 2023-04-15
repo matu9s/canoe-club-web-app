@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_user, logout_user, login_required, current_user
 
 from extensions import db, bcrypt
-from models import Role, Account, RoleType, Boat, BoatSize, KayakCanoe
 from helpers import is_authorized
+from models import Role, Account, RoleType, Boat, BoatSize, KayakCanoe, Member
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -28,7 +28,8 @@ def register():
     account = Account(username=data["username"], password=hashed_password,
                       name=data["name"], surname=data["surname"])
     db.session.add(account)
-    desired_roles = Role.query.filter(Role.type.in_([RoleType[role] for role in data["roles"]])).all()
+    desired_roles = Role.query.filter(Role.type.in_(
+        [RoleType[role] for role in data["roles"]])).all()
     for role in desired_roles:
         account.roles.append(role)
     db.session.commit()
@@ -38,7 +39,8 @@ def register():
 @api.route("/login/", methods=["POST"])
 def login():
     data = request.get_json()
-    account = db.session.query(Account).filter_by(username=data["username"]).first()
+    account = db.session.query(Account).filter_by(
+        username=data["username"]).first()
     if account is not None:
         if bcrypt.check_password_hash(account.password, data["password"]):
             login_user(account)
@@ -46,6 +48,7 @@ def login():
                             "data": {"username": account.username, "name": account.name, "surname": account.surname,
                                      "roles": [role.type.name for role in account.roles]}})
         return jsonify({"error": "Wrong username or password."}), 400
+    return jsonify(success=False), 400
 
 
 @api.route("/logout/", methods=["POST"])
@@ -63,7 +66,8 @@ def add_boat():
     data = request.get_json()
     boat = Boat(year_of_production=data["year_of_production"], size=BoatSize[data["size"]],
                 mini=data["mini"],
-                defect=data["defect"], kayak_canoe=KayakCanoe[data["kayak_canoe"]], account_id=data["account_id"],
+                defect=data["defect"], kayak_canoe=KayakCanoe[data["kayak_canoe"]
+        ], account_id=data["account_id"],
                 model=data["model"])
     db.session.add(boat)
     db.session.commit()
@@ -77,7 +81,8 @@ def list_boats():
     result = {"boats": []}
     for boat in boats:
         owner = db.session.query(Account).filter_by(id=boat.account_id).first()
-        owner_dict = {"username": owner.username, "id": owner.id} if owner else None
+        owner_dict = {"username": owner.username,
+                      "id": owner.id} if owner else None
         result["boats"].append({"id": boat.id,
                                 "year_of_production": boat.year_of_production,
                                 "size": boat.size.name,
@@ -126,3 +131,29 @@ def set_boat_defect(boat_id):
     boat.defect = data["defect"]
     db.session.commit()
     return jsonify(success=True)
+
+
+@api.route("/members/", methods=["GET"])
+def list_members():
+    if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    members = db.session.query(Member)
+    result = {"members": []}
+    for member in members:
+        account = db.session.query(Account).filter_by(
+            id=member.account_id).first()
+        result["members"].append({"id": member.id,
+                                  "account_id": account.id,
+                                  "username": account.username,
+                                  "name": account.name,
+                                  "surname": account.surname,
+                                  "roles": [role.type.name for role in account.roles],
+                                  "age": member.age,
+                                  "height": member.height,
+                                  "weight": member.weight,
+                                  "gender": member.gender.name if member.gender else None,
+                                  "category": member.category.name if member.category else None,
+                                  "kayak_canoe": member.kayak_canoe.name if member.kayak_canoe else None,
+                                  "membership_fee": member.membership_fee})
+    result["success"] = True
+    return jsonify(result), 200

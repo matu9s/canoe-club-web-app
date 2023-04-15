@@ -65,5 +65,6 @@ if __name__ == "__main__":
 @app.route("/boat-list/")
 @app.route("/add-boat/")
 @app.route("/login/")
+@app.route("/member-list/")
 def index():
     return app.send_static_file("index.html")
