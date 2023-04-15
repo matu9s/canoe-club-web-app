@@ -12,3 +12,7 @@ def create_roles():
     with app.app_context():
         db.session.add_all([admin_role, member_role, trainer_role, mechanic_role])
         db.session.commit()
+
+
+if __name__ == '__main__':
+    create_roles()
