@@ -1,0 +1,29 @@
+# Report zo 5. týždňa
+- **Meno:** Matúš Hluch
+- **Názov projektu:** Webová aplikácia pre kanoistický klub
+- **Týždeň:** 9.04.2023 až 16.04.2023
+- **Plán na tento týždeň:** 
+    - Deployment na pythonanywhere a beta report.
+    - Finalizácia beta verzie.
+    - Backend pre správu členov.
+- **Spravené za tento týždeň:**
+  - Beta report.
+    - f52dcf389c9ea76709ddabc2a436552742654e6c
+  - Deployment na pythonanywhere.
+    - https://matu9s.pythonanywhere.com
+    - 812641fee798116e601d49a252ae1bf810e36e09
+  - Finalizácia beta verzie.
+    - 62cbcaa4f06d6bef923516f9403060e036711910
+    - 027b12e7bf7a55cb2b2f412d1400df8dc94a43c7
+    - 5ebd8aff7cd41930f53f300b0ee4c09db39a2519
+    - 64d5507735daae9ef1c5ac940ca9f39d29ddedf7
+  - Backend pre správu členov.
+    - 4d192ba30fd9df6c95a50c6fcf06968eab0154da
+  - **Všetko dokopy:**
+- **Rozdiely medzi plánom a skutočnosťou:**
+  - N/A
+- **Plány na ďalší týždeň:**
+  - Dokončenie backendu pre členov.
+  - Frontend pre členov.
+- **Problémy a zmeny:** 
+  - N/A
