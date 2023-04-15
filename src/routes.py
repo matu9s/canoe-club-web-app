@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 from extensions import db, bcrypt
 from models import Role, Account, RoleType, Boat, BoatSize, KayakCanoe
-from src.helpers import is_authorized
+from helpers import is_authorized
 
 api = Blueprint('api', __name__, url_prefix='/api')
 

@@ -34,6 +34,7 @@ def create_app(config_object=Config):
 
     @login_manager.user_loader
     def load_account(account_id):
+        from models import Account
         return db.session.get(Account, int(account_id))
 
     return created_app
@@ -59,5 +60,10 @@ if __name__ == "__main__":
 
 
 @app.route("/")
+@app.route("/register/")
+@app.route("/home/")
+@app.route("/boat-list/")
+@app.route("/add-boat/")
+@app.route("/login/")
 def index():
     return app.send_static_file("index.html")
