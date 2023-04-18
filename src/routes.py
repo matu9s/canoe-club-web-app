@@ -58,6 +58,12 @@ def logout():
     return jsonify(success=True)
 
 
+@api.route("/authenticated/", methods=["GET"])
+@login_required
+def is_authenticated():
+    return jsonify(success=True)
+
+
 @api.route("/boats/add/", methods=["POST"])
 @login_required
 def add_boat():

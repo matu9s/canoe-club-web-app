@@ -14,7 +14,19 @@ function App() {
   useEffect(() => {
     const user = localStorage.getItem("current_user");
     if (user) {
-      setCurrentUser(JSON.parse(user));
+      fetch("/api/authenticated/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => {
+        if (response.status != 200) {
+          setCurrentUser({});
+          localStorage.removeItem("current_user");
+        } else {
+          setCurrentUser(JSON.parse(user));
+        }
+      });
     }
   }, []);
   const appStyle = {
