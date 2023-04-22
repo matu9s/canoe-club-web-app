@@ -168,3 +168,16 @@ def list_members():
                                   "membership_fee": member.membership_fee})
     result["success"] = True
     return jsonify(result), 200
+
+
+@api.route("/members/set-fee/<member_id>", methods=["POST"])
+def set_membership_fee(member_id):
+    data = request.get_json()
+    if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    member = db.session.query(Member).filter_by(id=member_id).first()
+    if not member:
+        return jsonify(success=False), 400
+    member.membership_fee = data["membership_fee"]
+    db.session.commit()
+    return jsonify(success=True)
