@@ -12,22 +12,23 @@ const Register = () => {
     if (currentUser.username !== undefined) navigate("/");
   }, [currentUser]);
   const [noRoleSelected, setNoRoleSelected] = useState(false);
+  const [memberSelected, setMemberSelected] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
-    const object = { roles: [] };
+    const formatedData = { roles: [] };
     data.forEach((value, key) => {
       if (key === "role") {
-        object["roles"].push(value);
-      } else object[key] = value;
+        formatedData["roles"].push(value);
+      } else formatedData[key] = value;
     });
-    if (object["roles"].length === 0) {
+    if (formatedData["roles"].length === 0) {
       setNoRoleSelected(true);
       return;
     } else {
       setNoRoleSelected(false);
     }
-    const json = JSON.stringify(object);
+    const json = JSON.stringify(formatedData);
     fetch("/api/register/", {
       method: "POST",
       headers: {
@@ -91,6 +92,13 @@ const Register = () => {
               id={`Role ${type}`}
               label={`Role ${type}`}
               value={`${type.toUpperCase()}`}
+              onChange={() => {
+                if (type == "member") {
+                  setMemberSelected(
+                    (prevMemberSelected) => !prevMemberSelected
+                  );
+                }
+              }}
             />
           </div>
         ))}
@@ -98,6 +106,50 @@ const Register = () => {
           <p style={{ color: "red" }}>Please select at least one role.</p>
         )}
       </Form.Group>
+      {memberSelected && (
+        <>
+          <Form.Group controlId="formAge">
+            <Form.Label>Age:</Form.Label>
+            <Form.Control type="number" name="age" required />
+          </Form.Group>
+          <Form.Group controlId="formHeight">
+            <Form.Label>Height in cm:</Form.Label>
+            <Form.Control type="number" name="height" required />
+          </Form.Group>
+          <Form.Group controlId="formWeight">
+            <Form.Label>Weight in kg:</Form.Label>
+            <Form.Control type="number" name="weight" required />
+          </Form.Group>
+          <Form.Group controlId="formGender">
+            <Form.Label>Gender:</Form.Label>
+            <Form.Control as="select" name="gender" required>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+            </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formCategory">
+            <Form.Label>Age Category:</Form.Label>
+            <Form.Control as="select" name="category" required>
+              {["children", "juniors", "cadets", "seniors", "veterans"].map(
+                (category) => {
+                  return (
+                    <option value={category.toUpperCase()}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </option>
+                  );
+                }
+              )}
+            </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formKayakCanoe">
+            <Form.Label>Are you primarily kayaker or canoeist?</Form.Label>
+            <Form.Control as="select" name="kayak_canoe" required>
+              <option value="KAYAK">Kayaker</option>
+              <option value="CANOE">Canoeist</option>
+            </Form.Control>
+          </Form.Group>
+        </>
+      )}
       <Button
         class="text-center"
         className="ms-2 me-2 mb-3"

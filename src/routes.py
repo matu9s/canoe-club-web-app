@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 from extensions import db, bcrypt
 from helpers import is_authorized
-from models import Role, Account, RoleType, Boat, BoatSize, KayakCanoe, Member
+from models import Role, Account, RoleType, Boat, BoatSize, KayakCanoe, Member, Gender, AgeCategory
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -27,6 +27,11 @@ def register():
     hashed_password = bcrypt.generate_password_hash(data["password"])
     account = Account(username=data["username"], password=hashed_password,
                       name=data["name"], surname=data["surname"])
+    if "MEMBER" in data["roles"]:
+        member = Member(age=data["age"], height=data["height"], weight=data["weight"], gender=Gender[data["gender"]],
+                        category=AgeCategory[data["category"]], kayak_canoe=KayakCanoe[data["kayak_canoe"]],
+                        membership_fee=0)
+        account.member = [member]
     db.session.add(account)
     desired_roles = Role.query.filter(Role.type.in_(
         [RoleType[role] for role in data["roles"]])).all()
@@ -163,3 +168,16 @@ def list_members():
                                   "membership_fee": member.membership_fee})
     result["success"] = True
     return jsonify(result), 200
+
+
+@api.route("/members/set-fee/<member_id>", methods=["POST"])
+def set_membership_fee(member_id):
+    data = request.get_json()
+    if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    member = db.session.query(Member).filter_by(id=member_id).first()
+    if not member:
+        return jsonify(success=False), 400
+    member.membership_fee = data["membership_fee"]
+    db.session.commit()
+    return jsonify(success=True)

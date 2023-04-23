@@ -51,6 +51,8 @@ class Member(db.Model):
     kayak_canoe = db.Column(db.Enum(KayakCanoe))
     membership_fee = db.Column(db.Float)
     account_id = db.Column(db.ForeignKey("account.id"))
+    account = db.relationship("Account", lazy='subquery', uselist=False,
+                              backref=db.backref('member', lazy=True))
 
 
 class BoatSize(Enum):
