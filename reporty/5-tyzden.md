@@ -20,6 +20,7 @@
   - Backend pre správu členov.
     - 4d192ba30fd9df6c95a50c6fcf06968eab0154da
   - **Všetko dokopy:**
+    - a1ccf411e98d89599ff0179fba121c3be976e4a1
 - **Rozdiely medzi plánom a skutočnosťou:**
   - N/A
 - **Plány na ďalší týždeň:**
