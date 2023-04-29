@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, date
+from time import gmtime
 
 from flask import Blueprint, jsonify, request
 from flask_login import login_user, logout_user, login_required, current_user
@@ -157,6 +158,15 @@ def list_members():
     for member in members:
         account = db.session.query(Account).filter_by(
             id=member.account_id).first()
+        absolved_trainings = {"WATER": 0,
+                              "OUTSIDE": 0,
+                              "SWIMMING": 0,
+                              "GYM": 0,
+                              "ERGOMETERS": 0}
+        gmtime_now = gmtime()[:6]
+        for training in member.trainings:
+            if datetime(*gmtime_now).replace(month=1, day=1) < training.date_time < datetime(*gmtime_now):
+                absolved_trainings[training.type.name] += 1
         result["members"].append({"id": member.id,
                                   "account_id": account.id,
                                   "username": account.username,
@@ -169,7 +179,8 @@ def list_members():
                                   "gender": member.gender.name if member.gender else None,
                                   "category": member.category.name if member.category else None,
                                   "kayak_canoe": member.kayak_canoe.name if member.kayak_canoe else None,
-                                  "membership_fee": member.membership_fee})
+                                  "membership_fee": member.membership_fee,
+                                  "absolved_trainings": absolved_trainings})
     result["success"] = True
     return jsonify(result), 200
 
@@ -195,7 +206,7 @@ def add_training():
     if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
         return jsonify({"error": "Wrong role.", "success": False}), 403
     date = datetime.strptime(data["date_time"], "%Y-%m-%dT%H:%M:%S.%fZ")
-    if date < datetime.now():
+    if date < datetime(*gmtime()[:6]):
         return jsonify({"error": "Please, set time in the future.", "success": False}), 400
     training = Training(place=data["place"],
                         date_time=date,
@@ -211,7 +222,8 @@ def add_training():
 def list_trainings():
     if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER, RoleType.MEMBER]):
         return jsonify({"error": "Wrong role.", "success": False}), 403
-    trainings = db.session.query(Training).filter(Training.date_time > datetime.now()).order_by(Training.date_time)
+    trainings = db.session.query(Training).filter(Training.date_time > datetime(*gmtime()[:6])).order_by(
+        Training.date_time)
     trainings_list = []
     for training in trainings:
         trainer = db.session.query(Account).filter_by(id=training.account_id).first()
