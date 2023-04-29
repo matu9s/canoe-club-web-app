@@ -158,7 +158,7 @@ def list_members():
     for member in members:
         account = db.session.query(Account).filter_by(
             id=member.account_id).first()
-        absolved_trainings = {"WATER": 0,
+        completed_trainings = {"WATER": 0,
                               "OUTSIDE": 0,
                               "SWIMMING": 0,
                               "GYM": 0,
@@ -166,7 +166,7 @@ def list_members():
         gmtime_now = gmtime()[:6]
         for training in member.trainings:
             if datetime(*gmtime_now).replace(month=1, day=1) < training.date_time < datetime(*gmtime_now):
-                absolved_trainings[training.type.name] += 1
+                completed_trainings[training.type.name] += 1
         result["members"].append({"id": member.id,
                                   "account_id": account.id,
                                   "username": account.username,
@@ -180,7 +180,7 @@ def list_members():
                                   "category": member.category.name if member.category else None,
                                   "kayak_canoe": member.kayak_canoe.name if member.kayak_canoe else None,
                                   "membership_fee": member.membership_fee,
-                                  "absolved_trainings": absolved_trainings})
+                                  "completed_trainings": completed_trainings})
     result["success"] = True
     return jsonify(result), 200
 
