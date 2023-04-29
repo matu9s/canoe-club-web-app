@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 function Members() {
   const [members, setMembers] = useState([]);
   const [limit, setLimit] = useState(Infinity);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
     fetch("/api/members/", {
@@ -13,10 +14,15 @@ function Members() {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
-      .then((data) => setMembers(data.members));
+      .then((data) => {
+        if (data.success !== false) {
+          setMembers(data.members);
+          setAuthorized(true);
+        }
+      });
   }, []);
 
-  return (
+  return authorized ? (
     <>
       <Form
         onSubmit={(event) => {
@@ -35,7 +41,7 @@ function Members() {
         />
         <Button type="submit">Filter</Button>
       </Form>
-      <Table striped bordered hover>
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Username</th>
@@ -139,6 +145,8 @@ function Members() {
         </tbody>
       </Table>
     </>
+  ) : (
+    "Unauthorized"
   );
 }
 

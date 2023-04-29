@@ -7,8 +7,10 @@ import Register from "./pages/Register";
 import AddBoat from "./pages/AddBoat";
 import BoatsList from "./pages/BoatsList";
 import Members from "./pages/Members";
+import AddTraining from "./pages/AddTraining";
 import { userContext } from "./UserContext";
 import background from "./background.jpg";
+import TrainingsList from "./pages/TrainingsList";
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const value = { currentUser, setCurrentUser };
@@ -48,6 +50,8 @@ function App() {
               <Route path="add-boat" element={<AddBoat />} />
               <Route path="boat-list" element={<BoatsList />} />
               <Route path="member-list" element={<Members />} />
+              <Route path="add-training" element={<AddTraining />} />
+              <Route path="training-list" element={<TrainingsList />} />
             </Route>
           </Routes>
         </BrowserRouter>
