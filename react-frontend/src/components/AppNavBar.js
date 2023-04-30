@@ -43,8 +43,12 @@ const AppNavBar = () => {
                 </NavDropdown>
                 <Nav.Link href="/member-list">Members</Nav.Link>
                 <NavDropdown title="Trainings">
-                  <NavDropdown.Item href="#">Trainings List</NavDropdown.Item>
-                  <NavDropdown.Item href="#">Add Training</NavDropdown.Item>
+                  <NavDropdown.Item href="/training-list">
+                    Trainings List
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/add-training">
+                    Add Training
+                  </NavDropdown.Item>
                 </NavDropdown>
                 <Navbar.Text>
                   Signed in as: <b>{currentUser.username}</b>

@@ -1,9 +1,13 @@
+from datetime import datetime, date
+from time import gmtime
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_user, logout_user, login_required, current_user
 
 from extensions import db, bcrypt
 from helpers import is_authorized
-from models import Role, Account, RoleType, Boat, BoatSize, KayakCanoe, Member, Gender, AgeCategory
+from models import Role, Account, RoleType, Boat, BoatSize, KayakCanoe, Member, Gender, AgeCategory, Training, \
+    TrainingType
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -145,6 +149,7 @@ def set_boat_defect(boat_id):
 
 
 @api.route("/members/", methods=["GET"])
+@login_required
 def list_members():
     if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
         return jsonify({"error": "Wrong role.", "success": False}), 403
@@ -153,6 +158,15 @@ def list_members():
     for member in members:
         account = db.session.query(Account).filter_by(
             id=member.account_id).first()
+        completed_trainings = {"WATER": 0,
+                              "OUTSIDE": 0,
+                              "SWIMMING": 0,
+                              "GYM": 0,
+                              "ERGOMETERS": 0}
+        gmtime_now = gmtime()[:6]
+        for training in member.trainings:
+            if datetime(*gmtime_now).replace(month=1, day=1) < training.date_time < datetime(*gmtime_now):
+                completed_trainings[training.type.name] += 1
         result["members"].append({"id": member.id,
                                   "account_id": account.id,
                                   "username": account.username,
@@ -165,12 +179,14 @@ def list_members():
                                   "gender": member.gender.name if member.gender else None,
                                   "category": member.category.name if member.category else None,
                                   "kayak_canoe": member.kayak_canoe.name if member.kayak_canoe else None,
-                                  "membership_fee": member.membership_fee})
+                                  "membership_fee": member.membership_fee,
+                                  "completed_trainings": completed_trainings})
     result["success"] = True
     return jsonify(result), 200
 
 
 @api.route("/members/set-fee/<member_id>", methods=["POST"])
+@login_required
 def set_membership_fee(member_id):
     data = request.get_json()
     if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
@@ -180,4 +196,76 @@ def set_membership_fee(member_id):
         return jsonify(success=False), 400
     member.membership_fee = data["membership_fee"]
     db.session.commit()
+    return jsonify(success=True)
+
+
+@api.route("/trainings/add/", methods=["POST"])
+@login_required
+def add_training():
+    data = request.get_json()
+    if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    date = datetime.strptime(data["date_time"], "%Y-%m-%dT%H:%M:%S.%fZ")
+    if date < datetime(*gmtime()[:6]):
+        return jsonify({"error": "Please, set time in the future.", "success": False}), 400
+    training = Training(place=data["place"],
+                        date_time=date,
+                        type=TrainingType[data["type"]],
+                        account_id=current_user.id)
+    db.session.add(training)
+    db.session.commit()
+    return jsonify(success=True)
+
+
+@api.route("/trainings/", methods=["GET"])
+@login_required
+def list_trainings():
+    if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER, RoleType.MEMBER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    trainings = db.session.query(Training).filter(Training.date_time > datetime(*gmtime()[:6])).order_by(
+        Training.date_time)
+    trainings_list = []
+    for training in trainings:
+        trainer = db.session.query(Account).filter_by(id=training.account_id).first()
+        trainings_list.append(
+            {"id": training.id, "place": training.place, "date_time": training.date_time, "type": training.type.name,
+             "members": [member.account.username for member in training.members],
+             "trainer": trainer.name + " " + trainer.surname if trainer is not None else None})
+    return jsonify({"success": True, "trainings": trainings_list}), 200
+
+
+@api.route("/trainings/delete/<training_id>", methods=["POST"])
+@login_required
+def delete_training(training_id):
+    if not is_authorized(current_user, [RoleType.ADMIN, RoleType.TRAINER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    training = db.session.query(Training).filter_by(id=training_id).first()
+    training.members = []
+    db.session.delete(training)
+    db.session.commit()
+    return jsonify(success=True)
+
+
+@api.route("/trainings/join/<training_id>", methods=["POST"])
+@login_required
+def join_training(training_id):
+    if not is_authorized(current_user, [RoleType.MEMBER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    training = db.session.query(Training).filter_by(id=training_id).first()
+    member = db.session.query(Member).filter_by(account_id=current_user.id).first()
+    training.members.append(member)
+    db.session.commit()
+    return jsonify(success=True)
+
+
+@api.route("/trainings/cancel-join/<training_id>", methods=["POST"])
+@login_required
+def cancel_join_training(training_id):
+    if not is_authorized(current_user, [RoleType.MEMBER]):
+        return jsonify({"error": "Wrong role.", "success": False}), 403
+    training = db.session.query(Training).filter_by(id=training_id).first()
+    member = db.session.query(Member).filter_by(account_id=current_user.id).first()
+    if member in training.members:
+        training.members.remove(member)
+        db.session.commit()
     return jsonify(success=True)

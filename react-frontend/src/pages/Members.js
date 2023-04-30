@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 function Members() {
   const [members, setMembers] = useState([]);
   const [limit, setLimit] = useState(Infinity);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
     fetch("/api/members/", {
@@ -13,10 +14,15 @@ function Members() {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
-      .then((data) => setMembers(data.members));
+      .then((data) => {
+        if (data.success !== false) {
+          setMembers(data.members);
+          setAuthorized(true);
+        }
+      });
   }, []);
 
-  return (
+  return authorized ? (
     <>
       <Form
         onSubmit={(event) => {
@@ -35,7 +41,7 @@ function Members() {
         />
         <Button type="submit">Filter</Button>
       </Form>
-      <Table striped bordered hover>
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Username</th>
@@ -48,6 +54,7 @@ function Members() {
             <th>Gender</th>
             <th>Category</th>
             <th>Kayak/Canoe</th>
+            <th>Completed Trainings</th>
             <th>
               Membership Fee
               <Button
@@ -90,6 +97,17 @@ function Members() {
                   <td>{member.gender}</td>
                   <td>{member.category}</td>
                   <td>{member.kayak_canoe}</td>
+                  <td>
+                    <ul>
+                      <li>Gym: {member.completed_trainings["GYM"]}</li>
+                      <li>Kayak/Canoe: {member.completed_trainings["WATER"]}</li>
+                      <li>Outdoors: {member.completed_trainings["OUTSIDE"]}</li>
+                      <li>Swimming: {member.completed_trainings["SWIMMING"]}</li>
+                      <li>
+                        Ergometers: {member.completed_trainings["ERGOMETERS"]}
+                      </li>
+                    </ul>
+                  </td>
                   <td>
                     <Form
                       onSubmit={(event) => {
@@ -139,6 +157,8 @@ function Members() {
         </tbody>
       </Table>
     </>
+  ) : (
+    "Unauthorized"
   );
 }
 
