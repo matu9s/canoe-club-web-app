@@ -61,7 +61,7 @@ function Members() {
                 variant="danger"
                 onClick={() => {
                   members.map((member) => {
-                    fetch(`api/members/set-fee/${member.id}`, {
+                    fetch(`/api/members/set-fee/${member.id}`, {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
@@ -100,9 +100,13 @@ function Members() {
                   <td>
                     <ul>
                       <li>Gym: {member.completed_trainings["GYM"]}</li>
-                      <li>Kayak/Canoe: {member.completed_trainings["WATER"]}</li>
+                      <li>
+                        Kayak/Canoe: {member.completed_trainings["WATER"]}
+                      </li>
                       <li>Outdoors: {member.completed_trainings["OUTSIDE"]}</li>
-                      <li>Swimming: {member.completed_trainings["SWIMMING"]}</li>
+                      <li>
+                        Swimming: {member.completed_trainings["SWIMMING"]}
+                      </li>
                       <li>
                         Ergometers: {member.completed_trainings["ERGOMETERS"]}
                       </li>
@@ -119,7 +123,7 @@ function Members() {
                             parseInt(data.get(member.id)),
                         };
                         const json = JSON.stringify(formatedData);
-                        fetch(`api/members/set-fee/${member.id}`, {
+                        fetch(`/api/members/set-fee/${member.id}`, {
                           method: "POST",
                           headers: {
                             "Content-Type": "application/json",
