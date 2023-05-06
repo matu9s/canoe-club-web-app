@@ -11,6 +11,7 @@ import AddTraining from "./pages/AddTraining";
 import { userContext } from "./UserContext";
 import background from "./background.jpg";
 import TrainingsList from "./pages/TrainingsList";
+import "./App.css";
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const value = { currentUser, setCurrentUser };
