@@ -6,6 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import paddle from "../paddle.svg";
 
 const AppNavBar = () => {
   const { currentUser, setCurrentUser } = useContext(userContext);
@@ -24,7 +25,10 @@ const AppNavBar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/">Kayak/Canoe Administration</Navbar.Brand>
+        <Navbar.Brand href="/">
+          <img src={paddle} width="50" height="50" class="rotate" />
+          Kayak/Canoe Admin
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

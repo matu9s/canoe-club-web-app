@@ -51,8 +51,8 @@ const AddBoat = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        window.location.reload();
       });
-    window.location.reload();
   };
   return (
     <Form className="ms-3 mr-3" onSubmit={handleSubmit}>

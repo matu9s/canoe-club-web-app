@@ -112,6 +112,7 @@ const BoatsList = () => {
     <ListGroupItem key={boat.id}>
       <h3 class="text-center">{boat.kayak_canoe}</h3>
       <ul>
+        <li>Year of production: {boat.year_of_production}</li>
         <li>Model: {boat.model}</li>
         <li>Size: {boat.size}</li>
         <li>Mini: {boat.mini ? "Yes" : "No"}</li>
@@ -154,7 +155,7 @@ const BoatsList = () => {
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
             >
-              <Form.Label>Add or edit defect:</Form.Label>
+              <Form.Label>Add or edit defect description:</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
@@ -176,7 +177,7 @@ const BoatsList = () => {
               variant="primary"
               type="submit"
             >
-              Edit defect
+              Save defect descripiton
             </Button>
           </Form>
         </div>
